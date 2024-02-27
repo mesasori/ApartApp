@@ -5,7 +5,7 @@
 ## Команда
 
 - [Нигматуллин Руслан](https://github.com/mesasori)
-- [Кирилл Глухих](https://github.com/)
+- [Кирилл Глухих](https://github.com/Zandari)
 
 ## Прочие ресурсы
 
