@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- App colors -->
+    <color name="grey">#7B7B7B</color>
+    <color name="text_title">#1D1B20</color>
+
+    <color name="light_gray">#E8E8E8</color>
 </resources>
