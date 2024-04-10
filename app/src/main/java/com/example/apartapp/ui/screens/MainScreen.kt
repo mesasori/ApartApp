@@ -35,7 +35,7 @@ fun MainScreen(
 
     val bottomBar: @Composable () -> Unit = {
         Navbar {
-            NavbarItemEnum.values().forEach {entry ->
+            NavbarItemEnum.entries.forEach { entry ->
                 NavbarButton(
                     onClick = {
                         mainViewModel.setSelectedNavItem(entry)
@@ -60,8 +60,7 @@ fun MainScreen(
             exitTransition = { ExitTransition.None },
         ) {
             PlacesScreen(
-                modifier = modifier.padding(start = 20.dp, end=20.dp, bottom = 20.dp),
-                placeItems = placeItems,
+                placeItemsState = mainViewModel.placeItems,
                 bottomBar = bottomBar,
                 onNavigateToAddPlaces = {
                     navController.navigate("places/add")
@@ -85,7 +84,6 @@ fun MainScreen(
             exitTransition = {ExitTransition.None}
         ) {
             ApartsScreen(
-                modifier = modifier.padding(start = 20.dp, end=20.dp, bottom = 20.dp),
                 bottomBar = bottomBar
             )
         }
