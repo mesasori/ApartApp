@@ -3,7 +3,6 @@ package com.example.apartapp.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.PointF
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,13 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.example.apartapp.R
+import com.example.apartapp.data.BottomSheetData
 import com.example.apartapp.databinding.FragmentMapBinding
 import com.yandex.mapkit.Animation
+import com.yandex.mapkit.GeoObject
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.GeoObjectTapListener
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.GeoObjectInspectionMetadata
 import com.yandex.mapkit.map.GeoObjectSelectionMetadata
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.InputListener
@@ -38,6 +38,7 @@ import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
 
 class MapFragment : Fragment() {
+    // binding
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
 
@@ -45,10 +46,10 @@ class MapFragment : Fragment() {
     private lateinit var map: Map
     private lateinit var mapWindow: MapWindow
 
+    // Search Session
     private lateinit var searchManager: SearchManager
     private lateinit var searchSession: Session
 
-    private lateinit var imageProvider: ImageProvider
     private var placemarkMapObject: PlacemarkMapObject? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +96,6 @@ class MapFragment : Fragment() {
             .getItem(GeoObjectSelectionMetadata::class.java)
 
         map.selectGeoObject(selectionMetadata)
-
         map.cameraPosition.run {
             map.move(
                 CameraPosition(point, getFutureZoom(zoom), azimuth, tilt),
@@ -103,54 +103,36 @@ class MapFragment : Fragment() {
                 null
             )
         }
+        Log.d("TAP INFO", "poi tap")
 
-        searchSession = searchManager.submit(point, DEFAULT_ZOOM.toInt(), SearchOptions(), searchListener)
+        val searchSessionZoom = getSearchSessionZoom(currentZoom=map.cameraPosition.zoom)
 
+        searchSession = searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
         true
     }
 
     private val inputListener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) {
-            // Log about random place on map
             map.deselectGeoObject()
             deletePlacemark()
-            Log.d("inputListener", "latitude: ${point.latitude}, longitude: ${point.longitude}")
+            Log.d("TAP INFO", "simple tap with latitude: ${point.latitude} and longitude: ${point.longitude}")
         }
 
         override fun onMapLongTap(map: Map, point: Point) {
-            // After long tap showing some info about object (latitude and longitude)
             map.deselectGeoObject()
             changePlacemark(point)
+            Log.d("TAP INFO", "long tap with latitude: ${point.latitude} and longitude: ${point.longitude}")
 
-            Log.d("info about long tap", "${point.latitude} ${point.longitude}")
+            val searchSessionZoom = getSearchSessionZoom(currentZoom=map.cameraPosition.zoom)
+            searchSession = searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
         }
     }
 
     private val searchListener = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
-            val geoObject = response.collection.children.mapNotNull { it.obj }[0]
-            val name = geoObject.name
-            val point = geoObject.geometry[0].point!!
-            val pointLatitude = point.latitude
-            val pointLongitude = point.longitude
-            val description = geoObject.descriptionText
-
-            Log.d("OBJECT NAME", name.toString())
-            Log.d("OBJECT POINT LATITUDE", pointLatitude.toString())
-            Log.d("OBJECT POINT LONGITUDE", pointLongitude.toString())
-            Log.d("OBJECT DESCRIPTION", description.toString())
-
-            val metadata = geoObject.metadataContainer
-            Log.d("METADATA", metadata.toString())
-
-            val toponymAddress: Address = metadata.getItem(ToponymObjectMetadata::class.java).address
-            val postalCode = toponymAddress.postalCode ?: "null"
-            val additionalInfo = toponymAddress.additionalInfo ?: "null"
-            val countryCode = toponymAddress.countryCode ?: "null"
-            val formattedAddress = toponymAddress.formattedAddress ?: "null"
-
-            Log.d("HUETA", "postalCode: $postalCode, additionalInfo: $additionalInfo, countryCode: $countryCode, \n formattedAddress: $formattedAddress")
-
+            val myPoint = setUpMyPoint(response.collection.children.firstOrNull()?.obj)
+            val bottomSheet = BottomSheetFragment(myPoint)
+            bottomSheet.show(this@MapFragment.parentFragmentManager, BottomSheetFragment.TAG)
         }
 
         override fun onSearchError(error: Error) {
@@ -233,9 +215,52 @@ class MapFragment : Fragment() {
         return bitmap
     }
 
+    private fun getSearchSessionZoom(currentZoom: Float): Int {
+        return if (currentZoom >= 10f) ADDRESS_ZOOM .toInt() else currentZoom.toInt()
+    }
+
+    private fun setUpMyPoint(geoObject: GeoObject?): BottomSheetData {
+        val point: Point = geoObject?.geometry?.firstOrNull()?.point ?: Point(0.0, 0.0)
+        val toponymAddress = geoObject?.metadataContainer?.getItem(ToponymObjectMetadata::class.java)?.address
+
+        val postalCode = toponymAddress?.postalCode
+        val street = toponymAddress?.components?.firstOrNull {
+            it.kinds.contains(Address.Component.Kind.STREET)
+        }?.name
+
+        val house = toponymAddress?.components?.firstOrNull {
+            it.kinds.contains(Address.Component.Kind.HOUSE)
+        }?.name
+        val province = toponymAddress?.components?.firstOrNull {
+            it.kinds.contains(Address.Component.Kind.PROVINCE)
+        }?.name ?: "Undefined"
+        val country = toponymAddress?.components?.firstOrNull {
+            it.kinds.contains(Address.Component.Kind.COUNTRY)
+        }?.name
+        val city = toponymAddress?.components?.firstOrNull {
+            it.kinds.contains(Address.Component.Kind.LOCALITY)
+        }?.name
+
+        val title = if (house == null) {
+            street ?: province
+        } else "$street $house"
+
+        val description = if (postalCode == null) {
+            "$city, $country"
+        } else "$city: $postalCode"
+
+        val coordinates = "Coordinates: ${point.latitude}, ${point.longitude}"
+
+        return BottomSheetData(title, description, coordinates)
+    }
+
     companion object {
         private const val ZOOM_STEP = 1.0f
-        private const val DEFAULT_ZOOM: Float = 12f
+
+        private const val DEFAULT_ZOOM: Float = 13f
+
+        private const val ADDRESS_ZOOM: Float = 16f
+
         private const val PLACEMARK_SCALE = 1.5f
 
         private val MOVE_ANIMATION = Animation(Animation.Type.SMOOTH, 0.4f)
