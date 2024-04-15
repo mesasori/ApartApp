@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package com.example.apartapp.ui
 
 import android.content.Context
@@ -229,12 +230,10 @@ class MapFragment : Fragment() {
         return bitmap
     }
 
-    @Suppress("TooManyFunctions")
     private fun getSearchSessionZoom(currentZoom: Float): Int {
         return if (currentZoom >= START_ZOOM) ADDRESS_ZOOM.toInt() else currentZoom.toInt()
     }
 
-    @Suppress("TooManyFunctions")
     private fun setUpMyPoint(geoObject: GeoObject?): BottomSheetData {
         val point: Point = geoObject?.geometry?.firstOrNull()?.point ?: Point(0.0, 0.0)
         val toponymAddress =
