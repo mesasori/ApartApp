@@ -3,7 +3,7 @@ package com.example.apartapp
 import android.app.Application
 import com.yandex.mapkit.MapKitFactory
 
-class App: Application() {
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
         MapKitFactory.setApiKey(MAPKIT_API_KEY)

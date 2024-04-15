@@ -5,11 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.apartapp.R
 import com.example.apartapp.data.BottomSheetData
 import com.example.apartapp.databinding.FragmentMapBinding
@@ -55,12 +55,10 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // map objects initialization
         mapWindow = binding.mapView.mapWindow
         map = mapWindow.map
         mapObjectCollection = map.mapObjects.addCollection()
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE)
-        //imageProvider = ImageProvider.fromResource(requireActivity(), R.drawable.ic_placemark)
 
         with(map.cameraPosition) {
             map.move(
@@ -105,9 +103,10 @@ class MapFragment : Fragment() {
         }
         Log.d("TAP INFO", "poi tap")
 
-        val searchSessionZoom = getSearchSessionZoom(currentZoom=map.cameraPosition.zoom)
+        val searchSessionZoom = getSearchSessionZoom(currentZoom = map.cameraPosition.zoom)
 
-        searchSession = searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
+        searchSession =
+            searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
         true
     }
 
@@ -115,16 +114,23 @@ class MapFragment : Fragment() {
         override fun onMapTap(map: Map, point: Point) {
             map.deselectGeoObject()
             deletePlacemark()
-            Log.d("TAP INFO", "simple tap with latitude: ${point.latitude} and longitude: ${point.longitude}")
+            Log.d(
+                "TAP INFO",
+                "simple tap with latitude: ${point.latitude} and longitude: ${point.longitude}"
+            )
         }
 
         override fun onMapLongTap(map: Map, point: Point) {
             map.deselectGeoObject()
             changePlacemark(point)
-            Log.d("TAP INFO", "long tap with latitude: ${point.latitude} and longitude: ${point.longitude}")
+            Log.d(
+                "TAP INFO",
+                "long tap with latitude: ${point.latitude} and longitude: ${point.longitude}"
+            )
 
-            val searchSessionZoom = getSearchSessionZoom(currentZoom=map.cameraPosition.zoom)
-            searchSession = searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
+            val searchSessionZoom = getSearchSessionZoom(currentZoom = map.cameraPosition.zoom)
+            searchSession =
+                searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
         }
     }
 
@@ -148,14 +154,15 @@ class MapFragment : Fragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun changePlacemark(point: Point) {
         if (placemarkMapObject == null) {
-            val bitmap = getBitmapFromVectorDrawable(requireActivity(), R.drawable.baseline_location_pin_24)
+            val bitmap =
+                getBitmapFromVectorDrawable(requireActivity(), R.drawable.baseline_location_pin_24)
             placemarkMapObject = mapObjectCollection.addPlacemark(
                 point,
                 ImageProvider.fromBitmap(bitmap),
                 IconStyle().apply {
-                    //anchor = PointF(0.5f, 1.0f)
                     scale = PLACEMARK_SCALE
                 }
             ).apply {
@@ -176,7 +183,11 @@ class MapFragment : Fragment() {
 
     private fun getFutureZoom(zoom: Float) = if (zoom < DEFAULT_ZOOM) zoom + ZOOM_STEP else zoom
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -205,23 +216,28 @@ class MapFragment : Fragment() {
 
     private fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
         val drawable = ContextCompat.getDrawable(context, drawableId)
-        val bitmap = Bitmap.createBitmap(
-            drawable!!.intrinsicWidth,
-            drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
+        lateinit var bitmap: Bitmap
+        drawable?.let {
+            bitmap = Bitmap.createBitmap(
+                it.intrinsicWidth,
+                it.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            it.setBounds(0, 0, canvas.width, canvas.height)
+            it.draw(canvas)
+        }
         return bitmap
     }
 
     private fun getSearchSessionZoom(currentZoom: Float): Int {
-        return if (currentZoom >= 10f) ADDRESS_ZOOM .toInt() else currentZoom.toInt()
+        return if (currentZoom >= 10f) ADDRESS_ZOOM.toInt() else currentZoom.toInt()
     }
 
     private fun setUpMyPoint(geoObject: GeoObject?): BottomSheetData {
         val point: Point = geoObject?.geometry?.firstOrNull()?.point ?: Point(0.0, 0.0)
-        val toponymAddress = geoObject?.metadataContainer?.getItem(ToponymObjectMetadata::class.java)?.address
+        val toponymAddress =
+            geoObject?.metadataContainer?.getItem(ToponymObjectMetadata::class.java)?.address
 
         val postalCode = toponymAddress?.postalCode
         val street = toponymAddress?.components?.firstOrNull {

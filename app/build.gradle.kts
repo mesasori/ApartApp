@@ -52,12 +52,11 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //ViewModel and LiveData
+    // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
-    //YandexMapKit
+    // YandexMapKit
     implementation("com.yandex.android:maps.mobile:4.5.1-full")
-
 
 }
