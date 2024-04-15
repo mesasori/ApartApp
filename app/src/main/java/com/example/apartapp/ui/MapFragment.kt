@@ -144,7 +144,6 @@ class MapFragment : Fragment() {
         override fun onSearchError(error: Error) {
             Log.d("ERROR", error.toString())
         }
-
     }
 
     private fun deletePlacemark() {
@@ -282,6 +281,4 @@ class MapFragment : Fragment() {
         private val MOVE_ANIMATION = Animation(Animation.Type.SMOOTH, 0.4f)
         private val ZOOM_ANIMATION = Animation(Animation.Type.LINEAR, 0.2f)
     }
-
-
 }
