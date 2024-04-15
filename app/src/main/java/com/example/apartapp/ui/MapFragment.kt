@@ -62,7 +62,7 @@ class MapFragment : Fragment() {
 
         with(map.cameraPosition) {
             map.move(
-                CameraPosition(Point(55.756538, 37.632592), 10f, azimuth, tilt),
+                CameraPosition(Point(START_LATITUDE, START_LONGITUDE), START_ZOOM, azimuth, tilt),
                 MOVE_ANIMATION,
                 null
             )
@@ -229,10 +229,12 @@ class MapFragment : Fragment() {
         return bitmap
     }
 
+    @Suppress("TooManyFunctions")
     private fun getSearchSessionZoom(currentZoom: Float): Int {
-        return if (currentZoom >= 10f) ADDRESS_ZOOM.toInt() else currentZoom.toInt()
+        return if (currentZoom >= START_ZOOM) ADDRESS_ZOOM.toInt() else currentZoom.toInt()
     }
 
+    @Suppress("TooManyFunctions")
     private fun setUpMyPoint(geoObject: GeoObject?): BottomSheetData {
         val point: Point = geoObject?.geometry?.firstOrNull()?.point ?: Point(0.0, 0.0)
         val toponymAddress =
@@ -271,12 +273,14 @@ class MapFragment : Fragment() {
 
     companion object {
         private const val ZOOM_STEP = 1.0f
-
+        private const val START_ZOOM = 10f
         private const val DEFAULT_ZOOM: Float = 13f
-
         private const val ADDRESS_ZOOM: Float = 16f
 
         private const val PLACEMARK_SCALE = 1.5f
+
+        private const val START_LATITUDE = 55.756538
+        private const val START_LONGITUDE = 37.632592
 
         private val MOVE_ANIMATION = Animation(Animation.Type.SMOOTH, 0.4f)
         private val ZOOM_ANIMATION = Animation(Animation.Type.LINEAR, 0.2f)
