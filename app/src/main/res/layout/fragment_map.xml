@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MapFragment">
+
+    <com.yandex.mapkit.mapview.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="12dp">
+
+        <ImageButton
+            android:id="@+id/btn_zoom_plus"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:elevation="1dp"
+            android:src="@drawable/round_add_24"
+            android:background="@drawable/zoom_button_background"
+            android:layout_marginBottom="10dp"/>
+
+        <ImageButton
+            android:id="@+id/btn_zoom_minus"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:elevation="1dp"
+            android:src="@drawable/baseline_assist_walker_24"
+            android:background="@drawable/zoom_button_background"/>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
