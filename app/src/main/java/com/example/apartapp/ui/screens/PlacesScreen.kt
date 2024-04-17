@@ -33,7 +33,7 @@ fun PlacesScreen(
     val placeItems by placeItemsState.collectAsState()
 
     Scaffold(
-        modifier = Modifier.padding(start = 20.dp, end=20.dp, bottom = 20.dp),
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         floatingActionButton = {
             FloatingActionButton(onClick = onNavigateToAddPlaces) {
                 Icon(Icons.Filled.Add, "add place")
@@ -66,11 +66,13 @@ fun PlacesScreenPreview() {
         PlacesScreen(
             bottomBar = {},
             onNavigateToAddPlaces = {},
-            placeItemsState = MutableStateFlow(listOf<Place>(
-                Place(name = "Title0", address = "Address0", frequency = 1),
-                Place(name = "Title1", address = "Address1", frequency = 2),
-                Place(name = "Title2", address = "Address2", frequency = 3),
-            )),
+            placeItemsState = MutableStateFlow(
+                listOf<Place>(
+                    Place(name = "Title0", address = "Address0", frequency = 1),
+                    Place(name = "Title1", address = "Address1", frequency = 2),
+                    Place(name = "Title2", address = "Address2", frequency = 3),
+                )
+            ),
         )
     }
 }

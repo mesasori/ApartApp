@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -23,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -44,8 +41,10 @@ private fun SheetContent(
 ) {
     LazyColumn(modifier) {
         item {
-            Row(modifier = Modifier
-                .padding(start=20.dp, bottom = 20.dp, top = 0.dp)) {
+            Row(
+                modifier = Modifier
+                    .padding(start = 20.dp, bottom = 20.dp, top = 0.dp)
+            ) {
                 Text(
                     text = aparts.size.toString(),
                     fontSize = 24.sp,
@@ -60,7 +59,7 @@ private fun SheetContent(
                 )
             }
         }
-        items(aparts) {apart ->
+        items(aparts) { apart ->
             ApartItem(
                 modifier = Modifier.padding(20.dp),
                 apart = apart
@@ -92,7 +91,7 @@ fun ApartsScreen(
         sheetContent = {
             SheetContent(
                 modifier = Modifier
-                    .heightIn(max=screenHeight-150.dp),
+                    .heightIn(max = screenHeight - 150.dp),
                 aparts = aparts,
             )
         },

@@ -2,17 +2,13 @@ package com.example.apartapp.ui.screens
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.apartapp.ui.components.Navbar
 import com.example.apartapp.ui.components.NavbarButton
-import com.example.apartapp.ui.theme.ApartTheme
 import com.example.apartapp.ui.viewmodels.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -21,15 +17,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.apartapp.ui.viewmodels.NavbarItemEnum
 
 
+private const val PlacesRoute = "places"
+private const val ApartsRoute = "places"
+private const val AddPlacesRoute = "places/add"
+
+
 /** Handles Screen changes and defines navbar for every screen that requires it*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = viewModel()
 ) {
     val selectedNavItem by mainViewModel.navItems.collectAsState()
-    val placeItems by mainViewModel.placeItems.collectAsState()
 
     val navController = rememberNavController()
 
@@ -41,8 +40,8 @@ fun MainScreen(
                         mainViewModel.setSelectedNavItem(entry)
                         navController.navigate(
                             when (entry) {
-                                NavbarItemEnum.PLACES -> "places"
-                                NavbarItemEnum.APARTS -> "aparts"
+                                NavbarItemEnum.PLACES -> PlacesRoute
+                                NavbarItemEnum.APARTS -> ApartsRoute
                             }
                         )
                     },
@@ -55,7 +54,7 @@ fun MainScreen(
 
     NavHost(navController = navController, startDestination = "places") {
         composable(
-            route = "places",
+            route = PlacesRoute,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
         ) {
@@ -63,25 +62,25 @@ fun MainScreen(
                 placeItemsState = mainViewModel.placeItems,
                 bottomBar = bottomBar,
                 onNavigateToAddPlaces = {
-                    navController.navigate("places/add")
+                    navController.navigate(AddPlacesRoute)
                 },
             )
         }
         composable(
-            route = "places/add",
+            route = AddPlacesRoute,
             enterTransition = { EnterTransition.None },
-            exitTransition = {ExitTransition.None}
+            exitTransition = { ExitTransition.None }
         ) {
             AddPlacesScreen(
                 onNavigateToParent = {
-                    navController.navigate("places")
+                    navController.navigate(PlacesRoute)
                 }
             )
         }
         composable(
-            route = "aparts",
+            route = ApartsRoute,
             enterTransition = { EnterTransition.None },
-            exitTransition = {ExitTransition.None}
+            exitTransition = { ExitTransition.None }
         ) {
             ApartsScreen(
                 bottomBar = bottomBar
@@ -97,7 +96,5 @@ fun MainScreen(
 )
 @Composable
 fun MainScreenPreview() {
-    ApartTheme {
-        MainScreen()
-    }
+    MainScreen()
 }

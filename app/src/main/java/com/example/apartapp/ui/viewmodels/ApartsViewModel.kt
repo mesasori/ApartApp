@@ -17,43 +17,49 @@ data class Apart(
     val metroStation: String? = null,
 )
 
-class ApartsViewModel: ViewModel() {
+class ApartsViewModel : ViewModel() {
     private val _aparts = MutableStateFlow(mutableListOf<Apart>())
 
     val aparts: StateFlow<List<Apart>> = _aparts.asStateFlow()
 
 
-    init { //
-        addApart(Apart(
-            imageUrl = "https://shorturl.at/pFKTY",
-            cost = 200000,
-            address = "Москва, САО, р-н Хорошевский, Хорошевское ш., 25Ак1",
-            rooms = 2,
-            floor = 10,
-            floorMax = 15,
-            area = 85,
-            metroStation = "Полежаевская"
-        ))
-        addApart(Apart(
-            imageUrl = "https://shorturl.at/pFKTY",
-            cost = 200000,
-            address = "Москва, САО, р-н Хорошевский, Хорошевское ш., 25Ак1",
-            rooms = 2,
-            floor = 10,
-            floorMax = 15,
-            area = 85,
-            metroStation = "Полежаевская"
-        ))
-        addApart(Apart(
-            imageUrl = "https://shorturl.at/pFKTY",
-            cost = 200000,
-            address = "Москва, САО, р-н Хорошевский, Хорошевское ш., 25Ак1",
-            rooms = 2,
-            floor = 10,
-            floorMax = 15,
-            area = 85,
-            metroStation = "Полежаевская"
-        ))
+    init {
+        addApart(
+            Apart(
+                imageUrl = "https://shorturl.at/pFKTY",
+                cost = 200000,
+                address = "Москва, САО, р-н Хорошевский, Хорошевское ш., 25Ак1",
+                rooms = 2,
+                floor = 10,
+                floorMax = 15,
+                area = 85,
+                metroStation = "Полежаевская"
+            )
+        )
+        addApart(
+            Apart(
+                imageUrl = "https://shorturl.at/pFKTY",
+                cost = 200000,
+                address = "Москва, САО, р-н Хорошевский, Хорошевское ш., 25Ак1",
+                rooms = 2,
+                floor = 10,
+                floorMax = 15,
+                area = 85,
+                metroStation = "Полежаевская"
+            )
+        )
+        addApart(
+            Apart(
+                imageUrl = "https://shorturl.at/pFKTY",
+                cost = 200000,
+                address = "Москва, САО, р-н Хорошевский, Хорошевское ш., 25Ак1",
+                rooms = 2,
+                floor = 10,
+                floorMax = 15,
+                area = 85,
+                metroStation = "Полежаевская"
+            )
+        )
     }
 
     fun addApart(apart: Apart) {

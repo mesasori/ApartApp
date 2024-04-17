@@ -1,9 +1,7 @@
 package com.example.apartapp.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -136,21 +134,23 @@ fun AddPlacesScreen(
             density = LocalDensity.current,
             initialValue = SheetValue.PartiallyExpanded,
             skipHiddenState = true,
-            confirmValueChange = {sheetValue ->
+            confirmValueChange = { sheetValue ->
                 sheetSwipeEnabled = sheetValue == SheetValue.Expanded
                 true
             }
         )
     )
     val clearFocusModifier = Modifier.pointerInput(Unit) {
-        detectTapGestures(onTap = {focusManager.clearFocus()})
+        detectTapGestures(onTap = { focusManager.clearFocus() })
     }
     BottomSheetScaffold(
         sheetContent = {
             SearchSheetContent(
                 modifier = clearFocusModifier
-                    .padding(start = 15.dp, end = 15.dp,
-                        top = if (sheetSwipeEnabled) 0.dp else 15.dp)
+                    .padding(
+                        start = 15.dp, end = 15.dp,
+                        top = if (sheetSwipeEnabled) 0.dp else 15.dp
+                    )
                     .heightIn(min = screenHeight - 120.dp),
                 onTextFieldFocusChanged = {
                     if (it) {

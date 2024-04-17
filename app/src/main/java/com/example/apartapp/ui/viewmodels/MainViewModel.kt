@@ -18,7 +18,7 @@ data class Place(
     val frequency: Int,
 )
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     /** Only for Navbar components, currently displayed Screen defined in currentScreen */
     private val _navItems = MutableStateFlow(NavbarItemEnum.PLACES)
     private val _placeItems = MutableStateFlow(mutableListOf<Place>())
