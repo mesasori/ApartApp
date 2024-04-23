@@ -24,6 +24,19 @@ import com.example.apartapp.R
 import com.example.apartapp.ui.viewmodels.Apart
 
 @Composable
+fun CoverImage(apart: Apart) {
+    AsyncImage( // TODO handle failing
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .fillMaxWidth()
+            .height(140.dp),
+        contentScale = ContentScale.Crop,
+        model = apart.imageUrl,
+        contentDescription = apart.address
+    )
+}
+
+@Composable
 fun ApartItem(
     modifier: Modifier = Modifier,
     apart: Apart,
@@ -41,15 +54,7 @@ fun ApartItem(
         textList
     }
     Column(modifier) {
-        AsyncImage( // TODO handle failing
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .height(140.dp),
-            contentScale = ContentScale.Crop,
-            model = apart.imageUrl,
-            contentDescription = apart.address
-        )
+        CoverImage(apart = apart)
 
         Text(
             modifier = Modifier.padding(top = 16.dp),
