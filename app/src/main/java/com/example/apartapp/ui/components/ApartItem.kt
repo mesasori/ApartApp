@@ -70,14 +70,12 @@ fun ApartItem(
                     )
             }
         }
-
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = apart.address,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp
         )
-
         if (apart.metroStation != null)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(

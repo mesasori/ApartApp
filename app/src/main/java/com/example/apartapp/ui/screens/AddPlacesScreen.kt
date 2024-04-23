@@ -174,9 +174,7 @@ fun AddPlacesScreen(
             onZoomOut = { /*TODO*/ }
         ) {
             Box( // TODO there should be map
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .fillMaxSize()
+                modifier = Modifier.background(MaterialTheme.colorScheme.secondary).fillMaxSize()
             ) {}
         }
     }

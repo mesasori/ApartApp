@@ -65,12 +65,7 @@ fun PlaceItem(
         modifier = Modifier
             .anchoredDraggable(state, Orientation.Horizontal)
             .offset {
-                IntOffset(
-                    x = state
-                        .requireOffset()
-                        .roundToInt(),
-                    y = 0
-                )
+                IntOffset(x = state.requireOffset().roundToInt(), y = 0)
             },
     ) {
         Row(
@@ -89,10 +84,7 @@ fun PlaceItem(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
                 )
-                Text(
-                    text = address,
-                    fontSize = 16.sp,
-                )
+                Text(text = address, fontSize = 16.sp)
             }
             Spacer(Modifier.weight(1f))
             Column {
