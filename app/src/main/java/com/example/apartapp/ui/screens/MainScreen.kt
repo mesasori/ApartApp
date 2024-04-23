@@ -18,7 +18,7 @@ import com.example.apartapp.ui.viewmodels.NavbarItemEnum
 
 
 private const val PlacesRoute = "places"
-private const val ApartsRoute = "places"
+private const val ApartsRoute = "aparts"
 private const val AddPlacesRoute = "places/add"
 
 
