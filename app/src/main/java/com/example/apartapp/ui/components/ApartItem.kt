@@ -3,8 +3,6 @@ package com.example.apartapp.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -66,7 +64,7 @@ fun ApartItem(
                 Text(text = it, fontSize = 16.sp)
                 if (i != textList.size - 1)
                     Text(
-                        modifier = Modifier.padding(start=6.dp, end=6.dp),
+                        modifier = Modifier.padding(start = 6.dp, end = 6.dp),
                         text = "·",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -83,9 +81,14 @@ fun ApartItem(
 
         if (apart.metroStation != null)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.metro), contentDescription = "metro")
-                Text(modifier = Modifier.padding(start = 8.dp),
-                    text = apart.metroStation, fontSize = 14.sp)
+                Image(
+                    painter = painterResource(id = R.drawable.metro),
+                    contentDescription = "metro"
+                )
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = apart.metroStation, fontSize = 14.sp
+                )
             }
     }
 }

@@ -21,10 +21,10 @@ fun RowScope.NavbarButton(onClick: () -> Unit, text: String, selected: Boolean) 
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor =
-                if (selected)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.secondary
+            if (selected)
+                MaterialTheme.colorScheme.primary
+            else
+                MaterialTheme.colorScheme.secondary
         ),
         modifier = Modifier.weight(1f),
         enabled = true,

@@ -12,16 +12,17 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SearchItem(
     modifier: Modifier = Modifier,
-    name: String ?= null,
+    name: String? = null,
     address: String,
 ) {
     Column(modifier = modifier) {
         if (name != null) {
-            Text(modifier = Modifier.padding(bottom = 2.dp),
-                text = name, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            Text(
+                modifier = Modifier.padding(bottom = 2.dp),
+                text = name, fontSize = 16.sp, fontWeight = FontWeight.Medium
+            )
             Text(text = address, fontSize = 12.sp, fontWeight = FontWeight.Normal)
-        }
-        else {
+        } else {
             Text(text = address, fontSize = 12.sp, fontWeight = FontWeight.Normal)
         }
     }

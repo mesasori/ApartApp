@@ -64,7 +64,13 @@ fun PlaceItem(
     Box(
         modifier = Modifier
             .anchoredDraggable(state, Orientation.Horizontal)
-            .offset { IntOffset(x = state.requireOffset().roundToInt(), y = 0) },
+            .offset {
+                IntOffset(
+                    x = state
+                        .requireOffset()
+                        .roundToInt(), y = 0
+                )
+            },
     ) {
         Row(
             modifier = modifier
@@ -98,7 +104,6 @@ fun PlaceItem(
         }
     }
 }
-
 
 @Preview
 @Composable
