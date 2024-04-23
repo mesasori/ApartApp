@@ -21,10 +21,10 @@ fun RowScope.NavbarButton(onClick: () -> Unit, text: String, selected: Boolean) 
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor =
-            if (selected)
-                MaterialTheme.colorScheme.primary
-            else
-                MaterialTheme.colorScheme.secondary
+                if (selected)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.secondary
         ),
         modifier = Modifier.weight(1f),
         enabled = true,
@@ -36,7 +36,7 @@ fun RowScope.NavbarButton(onClick: () -> Unit, text: String, selected: Boolean) 
 
 @Composable
 fun Navbar(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
-    Row(    // !TODO тут откуда-то падинг по вертикале лишний
+    Row(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.colorScheme.secondary)
@@ -45,7 +45,6 @@ fun Navbar(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Un
         content()
     }
 }
-
 
 @Preview
 @Composable

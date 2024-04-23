@@ -22,7 +22,6 @@ class ApartsViewModel : ViewModel() {
 
     val aparts: StateFlow<List<Apart>> = _aparts.asStateFlow()
 
-
     init {
         addApart(
             Apart(

@@ -22,7 +22,6 @@ import com.example.apartapp.ui.viewmodels.Place
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PlacesScreen(
@@ -54,7 +53,6 @@ fun PlacesScreen(
         }
     }
 }
-
 
 @Preview(
     showSystemUi = true,

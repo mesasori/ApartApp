@@ -7,19 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.apartapp.ui.components.Navbar
-import com.example.apartapp.ui.components.NavbarButton
-import com.example.apartapp.ui.viewmodels.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.apartapp.ui.components.Navbar
+import com.example.apartapp.ui.components.NavbarButton
+import com.example.apartapp.ui.viewmodels.MainViewModel
 import com.example.apartapp.ui.viewmodels.NavbarItemEnum
 
 private const val PlacesRoute = "places"
 private const val ApartsRoute = "aparts"
 private const val AddPlacesRoute = "places/add"
-
 
 /** Handles Screen changes and defines navbar for every screen that requires it*/
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,7 +86,6 @@ fun MainScreen(
         }
     }
 }
-
 
 @Preview(
     showSystemUi = true,

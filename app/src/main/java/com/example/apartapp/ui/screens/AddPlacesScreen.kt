@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import com.example.apartapp.ui.theme.ApartTheme
 import kotlinx.coroutines.launch
 
-
 @Composable
 private fun FloatingButtonsContainer(
     onBack: () -> Unit,
@@ -89,7 +88,6 @@ private fun FloatingButtonsContainer(
     }
 }
 
-
 @Composable
 private fun SearchSheetContent(
     modifier: Modifier,
@@ -117,7 +115,6 @@ private fun SearchSheetContent(
         )
     }
 }
-
 
 @Composable
 @ExperimentalMaterial3Api
@@ -148,7 +145,8 @@ fun AddPlacesScreen(
             SearchSheetContent(
                 modifier = clearFocusModifier
                     .padding(
-                        start = 15.dp, end = 15.dp,
+                        start = 15.dp,
+                        end = 15.dp,
                         top = if (sheetSwipeEnabled) 0.dp else 15.dp
                     )
                     .heightIn(min = screenHeight - 120.dp),
@@ -158,11 +156,13 @@ fun AddPlacesScreen(
                             scaffoldSheetState.bottomSheetState.expand()
                         }
                     }
-                })
+                }
+            )
         },
         modifier = clearFocusModifier,
         sheetDragHandle = {
-            if (sheetSwipeEnabled) BottomSheetDefaults.DragHandle() else Unit
+            if (sheetSwipeEnabled)
+                BottomSheetDefaults.DragHandle() else Unit
         },
         sheetSwipeEnabled = sheetSwipeEnabled,
         scaffoldState = scaffoldSheetState,
@@ -171,8 +171,9 @@ fun AddPlacesScreen(
         FloatingButtonsContainer(
             onBack = onNavigateToParent,
             onZoomIn = { /*TODO*/ },
-            onZoomOut = { /*TODO*/ }) {
-            Box(    // TODO there should be map
+            onZoomOut = { /*TODO*/ }
+        ) {
+            Box( // TODO there should be map
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.secondary)
                     .fillMaxSize()
@@ -180,7 +181,6 @@ fun AddPlacesScreen(
         }
     }
 }
-
 
 @Preview(
     showSystemUi = true,

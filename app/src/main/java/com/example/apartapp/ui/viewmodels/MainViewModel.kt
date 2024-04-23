@@ -1,11 +1,10 @@
 package com.example.apartapp.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-
 
 enum class NavbarItemEnum(val itemName: String) {
     APARTS("Aparts"),

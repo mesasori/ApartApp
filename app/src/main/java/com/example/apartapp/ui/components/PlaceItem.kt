@@ -68,7 +68,8 @@ fun PlaceItem(
                 IntOffset(
                     x = state
                         .requireOffset()
-                        .roundToInt(), y = 0
+                        .roundToInt(), 
+                    y = 0
                 )
             },
     ) {

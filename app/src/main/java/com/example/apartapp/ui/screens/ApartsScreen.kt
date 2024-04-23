@@ -33,7 +33,6 @@ import com.example.apartapp.ui.theme.ApartTheme
 import com.example.apartapp.ui.viewmodels.Apart
 import com.example.apartapp.ui.viewmodels.ApartsViewModel
 
-
 @Composable
 private fun SheetContent(
     modifier: Modifier,
@@ -98,7 +97,7 @@ fun ApartsScreen(
         scaffoldState = scaffoldSheetState,
         sheetPeekHeight = 100.dp,
     ) {
-        Box(    // TODO there should be map
+        Box( // TODO there should be map
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize(),
@@ -110,7 +109,6 @@ fun ApartsScreen(
         }
     }
 }
-
 
 @Preview(
     showSystemUi = true,

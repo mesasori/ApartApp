@@ -58,7 +58,6 @@ fun ApartItem(
             fontSize = 24.sp
         )
 
-
         Row(modifier = Modifier.padding(top = 8.dp)) {
             textList.forEachIndexed { i, it ->
                 Text(text = it, fontSize = 16.sp)
@@ -87,12 +86,12 @@ fun ApartItem(
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = apart.metroStation, fontSize = 14.sp
+                    text = apart.metroStation,
+                    fontSize = 14.sp
                 )
             }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

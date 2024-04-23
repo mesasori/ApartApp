@@ -19,7 +19,9 @@ fun SearchItem(
         if (name != null) {
             Text(
                 modifier = Modifier.padding(bottom = 2.dp),
-                text = name, fontSize = 16.sp, fontWeight = FontWeight.Medium
+                text = name,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
             )
             Text(text = address, fontSize = 12.sp, fontWeight = FontWeight.Normal)
         } else {
