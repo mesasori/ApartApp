@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/apartments_fragment"
-        android:name="com.example.apartapp.ui.apartments.ApartsFragment"
+        android:name="com.example.apartapp.ui.apartments.ApartmentsFragment"
         android:label="ApartmentsFragment"
         tools:layout="@layout/fragment_aparts"/>
 </navigation>
