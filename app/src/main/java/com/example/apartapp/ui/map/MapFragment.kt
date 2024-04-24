@@ -1,5 +1,5 @@
 @file:Suppress("TooManyFunctions")
-package com.example.apartapp.ui
+package com.example.apartapp.ui.map
 
 import android.content.Context
 import android.graphics.Bitmap

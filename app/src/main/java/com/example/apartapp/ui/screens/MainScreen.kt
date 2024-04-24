@@ -69,6 +69,7 @@ fun MainScreen(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) {
+
             AddPlacesScreen(
                 onNavigateToParent = {
                     navController.navigate(PlacesRoute)
