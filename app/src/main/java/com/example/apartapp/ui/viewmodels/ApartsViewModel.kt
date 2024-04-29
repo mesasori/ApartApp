@@ -10,6 +10,7 @@ data class Apart(
     val imageUrl: String,
     val cost: Int,
     val address: String,
+    val description: String? = null,
     val rooms: Int? = null,
     val floor: Int? = null,
     val floorMax: Int? = null,

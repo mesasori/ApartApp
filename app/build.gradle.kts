@@ -96,4 +96,5 @@ dependencies {
 
     // YandexMapKit
     implementation("com.yandex.android:maps.mobile:4.5.1-full")
+    implementation(kotlin("script-runtime"))
 }
