@@ -1,21 +1,28 @@
 @file:Suppress("TooManyFunctions")
+
 package com.example.apartapp.ui.map
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.example.apartapp.R
 import com.example.apartapp.data.GeoObjectHolder
 import com.example.apartapp.databinding.FragmentMapBinding
 import com.example.apartapp.ui.details.GeoDetailsDialogFragment
 import com.yandex.mapkit.Animation
+import com.yandex.mapkit.GeoObject
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.GeoObjectTapListener
@@ -25,6 +32,7 @@ import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.MapWindow
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.search.Response
@@ -35,8 +43,13 @@ import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.Session
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class MapFragment : Fragment() {
+
+    private val viewModel: MapFragmentViewModel by viewModels()
+
     // binding
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
@@ -48,6 +61,12 @@ class MapFragment : Fragment() {
     // Search Session
     private lateinit var searchManager: SearchManager
     private lateinit var searchSession: Session
+
+    // Text search
+    private lateinit var editQueryTextWatcher: TextWatcher
+
+    // Recycler View
+    private val suggestAdapter = SuggestListAdapter()
 
     private var placemarkMapObject: PlacemarkMapObject? = null
 
@@ -74,6 +93,14 @@ class MapFragment : Fragment() {
 
         searchSession =
             searchManager.submit(point, searchSessionZoom, SearchOptions(), searchListener)
+        true
+    }
+
+    private val mapObjectTapListener = MapObjectTapListener { mapObject, point ->
+        GeoObjectHolder.tappedGeo = (mapObject.userData as GeoObject)
+
+        showGeoDetailsDialogFragment()
+
         true
     }
 
@@ -105,8 +132,7 @@ class MapFragment : Fragment() {
         override fun onSearchResponse(response: Response) {
             GeoObjectHolder.tappedGeo = response.collection.children.firstOrNull()?.obj
 
-            val geoDetailsDialogFragment = GeoDetailsDialogFragment()
-            geoDetailsDialogFragment.show(this@MapFragment.parentFragmentManager, GeoDetailsDialogFragment.TAG)
+            showGeoDetailsDialogFragment()
         }
 
         override fun onSearchError(error: Error) {
@@ -118,8 +144,10 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupMapView()
+        viewModel.setVisibleRegion(map.visibleRegion)
 
         binding.apply {
+            listSuggests.adapter = suggestAdapter
             btnZoomPlus.setOnClickListener {
                 changeZoomByStep(ZOOM_STEP)
                 Log.d("toaster", "zoom in")
@@ -132,13 +160,59 @@ class MapFragment : Fragment() {
 
             map.addTapListener(objectTapListener)
             map.addInputListener(inputListener)
+
+            buttonSearch.setOnClickListener {
+                viewModel.startSearch()
+            }
+
+            buttonReset.setOnClickListener {
+                viewModel.reset()
+            }
+
+            editQueryTextWatcher = editQuery.doAfterTextChanged { text ->
+                if (text.toString() == viewModel.uiState.value.query) return@doAfterTextChanged
+                viewModel.setQueryText(text.toString())
+            }
+
+            editQuery.setOnEditorActionListener { _, _, _ ->
+                viewModel.startSearch()
+                true
+            }
         }
+
+        viewModel.uiState.flowWithLifecycle(lifecycle).onEach {
+            suggestAdapter.items = (it.suggestState as? SuggestState.Success)?.items ?: emptyList()
+
+            val searchItems = (it.searchState as? SearchState.Success)?.items ?: emptyList()
+            Log.d("Search Items", searchItems.toString())
+
+            updateSearchResponsePlacemarks(searchItems)
+
+            binding.apply {
+                editQuery.apply {
+                    if (text.toString() != it.query) {
+                        removeTextChangedListener(editQueryTextWatcher)
+                        setText(it.query)
+                        addTextChangedListener(editQueryTextWatcher)
+                    }
+                }
+                buttonSearch.isEnabled =
+                    it.query.isNotEmpty() && it.searchState == SearchState.Off
+                buttonReset.isEnabled =
+                    it.query.isNotEmpty() || it.searchState !is SearchState.Off
+
+                editQuery.isEnabled = it.searchState is SearchState.Off
+            }
+        }.launchIn(lifecycleScope)
+
+        viewModel.subscribeForSuggest().flowWithLifecycle(lifecycle).launchIn(lifecycleScope)
+        viewModel.subscribeForSearch().flowWithLifecycle(lifecycle).launchIn(lifecycleScope)
     }
 
     private fun setupMapView() {
         mapWindow = binding.mapView.mapWindow
         map = mapWindow.map
-        mapObjectCollection = map.mapObjects.addCollection()
+        mapObjectCollection = map.mapObjects
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE)
 
         with(map.cameraPosition) {
@@ -155,6 +229,23 @@ class MapFragment : Fragment() {
             mapObjectCollection.clear()
             placemarkMapObject = null
         }
+    }
+
+    private fun updateSearchResponsePlacemarks(items: List<SearchResponseItem>) {
+        map.mapObjects.clear()
+        val bitmap =
+            getBitmapFromVectorDrawable(requireActivity(), R.drawable.baseline_location_pin_24)
+        items.forEach {
+            map.mapObjects.addPlacemark().apply {
+                geometry = it.point
+                setIcon(
+                    ImageProvider.fromBitmap(bitmap),
+                    IconStyle().apply { scale = PLACEMARK_SCALE })
+                addTapListener(mapObjectTapListener)
+                userData = it.geoObject
+            }
+        }
+
     }
 
     @Suppress("DEPRECATION")
@@ -235,6 +326,14 @@ class MapFragment : Fragment() {
 
     private fun getSearchSessionZoom(currentZoom: Float): Int {
         return if (currentZoom >= START_ZOOM) ADDRESS_ZOOM.toInt() else currentZoom.toInt()
+    }
+
+    private fun showGeoDetailsDialogFragment() {
+        val geoDetailsDialogFragment = GeoDetailsDialogFragment()
+        geoDetailsDialogFragment.show(
+            this@MapFragment.parentFragmentManager,
+            GeoDetailsDialogFragment.TAG
+        )
     }
 
     companion object {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,33 +9,81 @@
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_query"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Search"
+                android:inputType="text"
+                android:lines="1" />
+
+            <ImageButton
+                android:id="@+id/button_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/round_close_24"
+                android:text="reset" />
+
+            <ImageButton
+                android:id="@+id/button_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/round_search_24"
+                android:text="search" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_suggests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="center|end"
-        android:layout_marginEnd="12dp">
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/btn_zoom_plus"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="center"
-            android:elevation="1dp"
-            android:src="@drawable/round_add_24"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/zoom_button_background"
-            android:layout_marginBottom="10dp"/>
+            android:elevation="1dp"
+            android:scaleType="center"
+            android:src="@drawable/round_add_24" />
 
         <ImageButton
             android:id="@+id/btn_zoom_minus"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="center"
+            android:background="@drawable/zoom_button_background"
             android:elevation="1dp"
-            android:src="@drawable/baseline_assist_walker_24"
-            android:background="@drawable/zoom_button_background"/>
+            android:scaleType="center"
+            android:src="@drawable/baseline_assist_walker_24" />
 
     </LinearLayout>
 
@@ -42,6 +91,6 @@
         android:id="@+id/composeViewContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"/>
+        android:layout_gravity="center_horizontal|bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,7 +2,6 @@ package com.example.apartapp.ui.details
 
 import androidx.lifecycle.ViewModel
 import com.example.apartapp.data.GeoObjectHolder
-import com.yandex.mapkit.GeoObject
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.search.Address
 import com.yandex.mapkit.search.ToponymObjectMetadata
@@ -13,9 +12,9 @@ data class DetailsDialogUiState(
     val descriptionText: String,
     val location: Point,
     val uri: String?
-    )
+)
 
-class GeoDetailsViewModel: ViewModel() {
+class GeoDetailsViewModel : ViewModel() {
     fun uiState(): DetailsDialogUiState {
         val geoObject = GeoObjectHolder.tappedGeo
 
@@ -52,7 +51,8 @@ class GeoDetailsViewModel: ViewModel() {
         } else "$city: $postalCode"
 
 
-        val uri = geoObject?.metadataContainer?.getItem(UriObjectMetadata::class.java)?.uris?.firstOrNull()
+        val uri =
+            geoObject?.metadataContainer?.getItem(UriObjectMetadata::class.java)?.uris?.firstOrNull()
 
         return DetailsDialogUiState(
             title = title,
@@ -61,5 +61,4 @@ class GeoDetailsViewModel: ViewModel() {
             uri = uri?.value
         )
     }
-
 }

@@ -28,7 +28,8 @@ fun PlacesScreen(
     onNavigateToAddPlaces: () -> Unit,
     bottomBar: @Composable () -> Unit,
     placeItemsState: StateFlow<List<Place>>,
-) {
+
+    ) {
     val placeItems by placeItemsState.collectAsState()
 
     Scaffold(

@@ -11,7 +11,7 @@ import com.example.apartapp.databinding.PlaceInfoDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yandex.mapkit.geometry.Point
 
-class GeoDetailsDialogFragment() : BottomSheetDialogFragment() {
+class GeoDetailsDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: PlaceInfoDialogBinding
 
     private val viewModel: GeoDetailsViewModel by viewModels()
@@ -37,7 +37,6 @@ class GeoDetailsDialogFragment() : BottomSheetDialogFragment() {
         binding.apply {
             buttonAddPlace.setOnClickListener {
                 GeoObjectHolder.selectedGeo = GeoObjectHolder.tappedGeo
-
                 dialog?.dismiss()
             }
         }
