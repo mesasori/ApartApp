@@ -35,7 +35,7 @@
                 android:layout_marginTop="5dp"/>
 
             <ImageButton
-                android:id="@+id/btn_close_bottomsheet"
+                android:id="@+id/button_close_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end|top"
@@ -64,6 +64,7 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_add_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_background_black"
